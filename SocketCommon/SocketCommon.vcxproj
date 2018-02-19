@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{3033CC1C-E966-4E75-948B-949C586247AB}</ProjectGuid>
-    <RootNamespace>SocketClientLib</RootNamespace>
+    <ProjectGuid>{FB068992-F3E0-40EE-86BE-51F6F722CE95}</ProjectGuid>
+    <RootNamespace>SocketCommon</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir);</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)lib;</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -90,7 +90,10 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(SolutionDir)include\$(ProjectName)" mkdir "$(SolutionDir)include\$(ProjectName)"
-xcopy "$(ProjectDir)SocketBaseClientService.h" "$(SolutionDir)include\$(ProjectName)\" /Y
+xcopy "$(ProjectDir)SocketTag.h" "$(SolutionDir)include\$(ProjectName)\" /Y
+xcopy "$(ProjectDir)SocketRemoteClient.h" "$(SolutionDir)include\$(ProjectName)\" /Y
+xcopy "$(ProjectDir)SocketIoEvent.h" "$(SolutionDir)include\$(ProjectName)\" /Y
+xcopy "$(ProjectDir)SocketBuffer.h" "$(SolutionDir)include\$(ProjectName)\" /Y
 xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -122,10 +125,15 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="SocketBaseClientService.h" />
+    <ClInclude Include="SocketBuffer.h" />
+    <ClInclude Include="SocketIoEvent.h" />
+    <ClInclude Include="SocketRemoteClient.h" />
+    <ClInclude Include="SocketTag.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SocketBaseClientService.cpp" />
+    <ClCompile Include="SocketBuffer.cpp" />
+    <ClCompile Include="SocketIoEvent.cpp" />
+    <ClCompile Include="SocketRemoteClient.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
