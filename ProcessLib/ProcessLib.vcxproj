@@ -92,6 +92,7 @@
       <Command>if not exist "$(SolutionDir)include\$(ProjectName)" mkdir "$(SolutionDir)include\$(ProjectName)"
 xcopy "$(ProjectDir)AntiRootkit\AntiRootkit.h" "$(SolutionDir)include\$(ProjectName)\AntiRootkit\" /Y
 xcopy "$(ProjectDir)Memory\Memory.h" "$(SolutionDir)include\$(ProjectName)\Memory\" /Y
+xcopy "$(ProjectDir)Memory\SearchBinary.h" "$(SolutionDir)include\$(ProjectName)\Memory\" /Y
 xcopy "$(ProjectDir)Process\Process.h" "$(SolutionDir)include\$(ProjectName)\Process\" /Y
 xcopy "$(ProjectDir)Thread\Thread.h" "$(SolutionDir)include\$(ProjectName)\Thread\" /Y
 xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /Y</Command>
@@ -127,12 +128,14 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
   <ItemGroup>
     <ClCompile Include="AntiRootkit\AntiRootkit.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
+    <ClCompile Include="Memory\SearchBinary.cpp" />
     <ClCompile Include="Process\Process.cpp" />
     <ClCompile Include="Thread\Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AntiRootkit\AntiRootkit.h" />
     <ClInclude Include="Memory\Memory.h" />
+    <ClInclude Include="Memory\SearchBinary.h" />
     <ClInclude Include="Process\Process.h" />
     <ClInclude Include="Thread\Thread.h" />
   </ItemGroup>
