@@ -49,6 +49,9 @@ namespace libTools
 
 		// 
 		static LONGLONG GetTimeValue(_In_ CONST SYSTEMTIME& SysTime);
+
+
+		static VOID FormatTime(_In_ ULONGLONG ulResult, _Out_opt_ std::wstring& wsText);
 	private:
 
 	};
