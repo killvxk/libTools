@@ -191,6 +191,28 @@ namespace libTools
 		_setmode(_fileno(stdout), _O_U8TEXT);
 	}
 
+	BOOL CCharacter::CopyTextToClipboard(_In_ LPCWSTR pwchText)
+	{
+		if (!OpenClipboard(NULL))
+		{
+			return FALSE;
+		}
+		EmptyClipboard();
+		HGLOBAL hglbCopy = GlobalAlloc(GMEM_DDESHARE, sizeof(WCHAR)*MAX_PATH);
+		if (hglbCopy == NULL)
+		{
+			CloseClipboard();
+			return FALSE;
+		}
+		// Lock the handle and copy the text to the buffer.
+		CHAR *lptstrCopy = (CHAR*)GlobalLock(hglbCopy);
+		WideCharToMultiByte(CP_OEMCP, NULL, pwchText, -1, lptstrCopy, MAX_PATH, NULL, NULL);
+		GlobalUnlock(hglbCopy);
+		SetClipboardData(CF_TEXT, hglbCopy);
+		CloseClipboard();
+		return TRUE;
+	}
+
 	std::vector<std::wstring> CCharacter::FindSplitFormatText(_In_ CONST std::wstring& wsFormatText)
 	{
 		std::vector<std::wstring> Vec;

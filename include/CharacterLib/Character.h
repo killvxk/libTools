@@ -237,6 +237,9 @@ namespace libTools
 			}
 			return result;
 		}
+
+		// CopyText To Clipboard
+		static BOOL CopyTextToClipboard(_In_ LPCWSTR pwchText);										
 	private:
 		static std::vector<std::wstring> FindSplitFormatText(_In_ CONST std::wstring& wsFormatText);
 
