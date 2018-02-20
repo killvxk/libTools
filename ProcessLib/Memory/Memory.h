@@ -1,5 +1,5 @@
-#ifndef __LIBTOOLS_PROCESS_MEMORY_MEMORY_H__
-#define __LIBTOOLS_PROCESS_MEMORY_MEMORY_H__
+#ifndef __LIBTOOLS_PROCESSLIB_MEMORY_MEMORY_H__
+#define __LIBTOOLS_PROCESSLIB_MEMORY_MEMORY_H__
 
 #include <Windows.h>
 #include <string>
@@ -61,4 +61,4 @@ namespace libTools
 	};
 }
 
-#endif // !__LIBTOOLS_PROCESS_MEMORY_MEMORY_H__
+#endif // !__LIBTOOLS_PROCESSLIB_MEMORY_MEMORY_H__

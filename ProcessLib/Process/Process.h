@@ -1,5 +1,5 @@
-#ifndef __LIBTOOLS_PROCESS_PROCESS_PROCESS_H__
-#define __LIBTOOLS_PROCESS_PROCESS_PROCESS_H__
+#ifndef __LIBTOOLS_PROCESSLIB_PROCESS_PROCESS_H__
+#define __LIBTOOLS_PROCESSLIB_PROCESS_PROCESS_H__
 
 #include <Windows.h>
 #include <string>
@@ -50,4 +50,4 @@ namespace libTools
 	};
 }
 
-#endif // !__LIBTOOLS_PROCESS_PROCESS_PROCESS_H__
+#endif // !__LIBTOOLS_PROCESSLIB_PROCESS_PROCESS_H__

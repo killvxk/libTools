@@ -1,5 +1,5 @@
-#ifndef __LIBTOOLS_ALGORITHMPROCESS_ENCRYP_RC4_H__
-#define __LIBTOOLS_ALGORITHMPROCESS_ENCRYP_RC4_H__
+#ifndef __LIBTOOLS_ALGORITHMLIB_ENCRYP_RC4_H__
+#define __LIBTOOLS_ALGORITHMLIB_ENCRYP_RC4_H__
 
 #include <Windows.h>
 #include <vector>
@@ -72,4 +72,4 @@ namespace libTools
 
 
 
-#endif // !__LIBTOOLS_ALGORITHMPROCESS_ENCRYP_RC4_H__
+#endif // !__LIBTOOLS_ALGORITHMLIB_ENCRYP_RC4_H__
