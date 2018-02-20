@@ -95,6 +95,7 @@ xcopy "$(ProjectDir)Memory\Memory.h" "$(SolutionDir)include\$(ProjectName)\Memor
 xcopy "$(ProjectDir)Memory\SearchBinary.h" "$(SolutionDir)include\$(ProjectName)\Memory\" /Y
 xcopy "$(ProjectDir)Process\Process.h" "$(SolutionDir)include\$(ProjectName)\Process\" /Y
 xcopy "$(ProjectDir)Thread\Thread.h" "$(SolutionDir)include\$(ProjectName)\Thread\" /Y
+xcopy "$(ProjectDir)KeyboardMsg\KeyboardMsg.h" "$(SolutionDir)include\$(ProjectName)\KeyboardMsg\" /Y
 xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -127,6 +128,7 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AntiRootkit\AntiRootkit.cpp" />
+    <ClCompile Include="KeyboardMsg\KeyboardMsg.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Memory\SearchBinary.cpp" />
     <ClCompile Include="Process\Process.cpp" />
@@ -134,6 +136,7 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AntiRootkit\AntiRootkit.h" />
+    <ClInclude Include="KeyboardMsg\KeyboardMsg.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Memory\SearchBinary.h" />
     <ClInclude Include="Process\Process.h" />

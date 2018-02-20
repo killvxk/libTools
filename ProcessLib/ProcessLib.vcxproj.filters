@@ -30,6 +30,9 @@
     <ClCompile Include="Memory\SearchBinary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardMsg\KeyboardMsg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AntiRootkit\AntiRootkit.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Memory\SearchBinary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardMsg\KeyboardMsg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
