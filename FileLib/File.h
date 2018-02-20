@@ -57,6 +57,9 @@ namespace libTools
 
 		// Get File Size
 		static BOOL WINAPI ReadAsciiFileLen(_In_ CONST std::wstring& cwsPath, _Out_ ULONG& ulFileLen);
+
+		// Directory is Exist
+		static BOOL WINAPI DirectoryExist(_In_ CONST std::wstring& wsPath);
 	};
 
 }

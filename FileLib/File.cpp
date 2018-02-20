@@ -337,4 +337,13 @@ namespace libTools
 		});
 	}
 
+
+	BOOL WINAPI CFile::DirectoryExist(_In_ CONST std::wstring& wsPath)
+	{
+		DWORD dwType = GetFileAttributesW(wsPath.c_str());
+		if (dwType == INVALID_FILE_ATTRIBUTES)
+			return FALSE;
+
+		return dwType & FILE_ATTRIBUTE_DIRECTORY ? TRUE : FALSE;
+	}
 }
