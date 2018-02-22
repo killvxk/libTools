@@ -135,7 +135,7 @@ namespace libTools
 		}
 
 		if (!wsParm.empty())
-			VecParm.push_back(std::move(wsParm));
+			VecParm.push_back(wsParm);
 
 		auto uParamCount = GetCount_By_SpecifyText(wsText, std::wstring(L",")) + 1;
 		while (VecParm.size() < uParamCount)

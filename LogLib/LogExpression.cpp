@@ -11,7 +11,7 @@ namespace libTools
 	UINT CLogExpression::Push(_In_ std::function<VOID(CONST std::vector<std::wstring>&)> fnPtr, _In_ CONST std::wstring& wsFunName) throw()
 	{
 		ExpressionFunPtr FunPtrCustome_ = { fnPtr, wsFunName };
-		VecFunPtr.push_back(std::move(FunPtrCustome_));
+		VecFunPtr.push_back(FunPtrCustome_);
 		return static_cast<UINT>(VecFunPtr.size());
 	}
 

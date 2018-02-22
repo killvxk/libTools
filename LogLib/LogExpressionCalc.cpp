@@ -312,7 +312,7 @@ namespace libTools
 			{
 				while (StackSymbol.top().emContentType != em_Content_Type::em_Content_Type_LeftBracket)
 				{
-					tmpRpn.push(std::move(StackSymbol.top()));
+					tmpRpn.push(StackSymbol.top());
 					StackSymbol.pop();
 				}
 				StackSymbol.pop();
@@ -325,14 +325,20 @@ namespace libTools
 				do
 				{
 					if (StackSymbol.top().emContentType == em_Content_Type::em_Content_Type_LeftAddress)
+					{
 						bExistAddress = TRUE;
-					tmpRpn.push(std::move(StackSymbol.top()));
+					}
+
+
+					tmpRpn.push(StackSymbol.top());
 					StackSymbol.pop();
 				} while (StackSymbol.size() != 0 && StackSymbol.top().emContentType != em_Content_Type::em_Content_Type_LeftAddress);
 
+
+
 				if (!bExistAddress)
 				{
-					tmpRpn.push(std::move(StackSymbol.top()));
+					tmpRpn.push(StackSymbol.top());
 					StackSymbol.pop();
 				}
 
@@ -353,20 +359,22 @@ namespace libTools
 				continue;
 			}
 
-			tmpRpn.push(std::move(StackSymbol.top()));
+			tmpRpn.push(StackSymbol.top());
 			StackSymbol.pop();
 			StackSymbol.push(itm);
 		}
 
+
 		while (!StackSymbol.empty())
 		{
-			tmpRpn.push(std::move(StackSymbol.top()));
+			tmpRpn.push(StackSymbol.top());
 			StackSymbol.pop();
 		}
 
+
 		while (!tmpRpn.empty())
 		{
-			Rpn.push(std::move(tmpRpn.top()));
+			Rpn.push(tmpRpn.top());
 			tmpRpn.pop();
 		}
 

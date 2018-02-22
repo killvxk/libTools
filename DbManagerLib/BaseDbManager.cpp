@@ -57,7 +57,7 @@ BOOL libTools::CBaseDbManager::ExcuteSQL(_In_ CONST std::wstring wsSQL, _In_ UIN
 				::SQLGetData(Env.hStmt, static_cast<SQLSMALLINT>(i + 1), SQL_C_WCHAR, Text, uMaxTextSize, NULL);
 				Table_.push_back(Text);
 			}
-			VecResult.push_back(std::move(Table_));
+			VecResult.push_back(Table_);
 		}
 
 		FreeMem(Env);
@@ -81,7 +81,7 @@ BOOL libTools::CBaseDbManager::ExcuteSQL_SingleResult(_In_ CONST std::wstring& w
 			return FALSE;
 		}
 
-		wsResultText = std::move(VecResult.at(0).at(0));
+		wsResultText = VecResult.at(0).at(0);
 		return TRUE;
 	});
 }
