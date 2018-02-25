@@ -257,7 +257,7 @@ namespace libTools
 		});
 	}
 
-	BOOL WINAPI CFile::ReadFileContent(_In_ CONST std::wstring& wsPath, _Out_ LPVOID& lpFileContent, _Out_ UINT& uSize)
+	BOOL WINAPI CFile::ReadFileContent(_In_ CONST std::wstring& wsPath, _Out_ LPVOID& lpFileContent, _Out_ SIZE_T& uSize)
 	{
 		return CException::InvokeFunc<BOOL>(__FUNCTIONW__, [&]
 		{

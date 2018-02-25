@@ -96,6 +96,7 @@ xcopy "$(ProjectDir)Memory\SearchBinary.h" "$(SolutionDir)include\$(ProjectName)
 xcopy "$(ProjectDir)Process\Process.h" "$(SolutionDir)include\$(ProjectName)\Process\" /Y
 xcopy "$(ProjectDir)Thread\Thread.h" "$(SolutionDir)include\$(ProjectName)\Thread\" /Y
 xcopy "$(ProjectDir)KeyboardMsg\KeyboardMsg.h" "$(SolutionDir)include\$(ProjectName)\KeyboardMsg\" /Y
+xcopy "$(ProjectDir)Common\ResHandleManager.h" "$(SolutionDir)include\$(ProjectName)\Common\" /Y
 xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -136,6 +137,7 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AntiRootkit\AntiRootkit.h" />
+    <ClInclude Include="Common\ResHandleManager.h" />
     <ClInclude Include="KeyboardMsg\KeyboardMsg.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Memory\SearchBinary.h" />

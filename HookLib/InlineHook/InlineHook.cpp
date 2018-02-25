@@ -52,7 +52,7 @@ BOOL libTools::CInlineHook::Hook(_In_ _Out_ HookContent* pHookContent)
 	});
 }
 
-BOOL libTools::CInlineHook::UnHook(_In_ void *OrgProc, _In_ void *RealProc)
+BOOL libTools::CInlineHook::UnHook(_In_ LPVOID OrgProc, _In_ LPVOID RealProc)
 {
 	CLdrHeader::UnInlineHook(OrgProc, RealProc);
 	return TRUE;
@@ -77,7 +77,7 @@ BOOL libTools::CInlineHook::UnHook(_In_ _Out_ HookContent* pHookContent)
 	});
 }
 
-BOOL libTools::CInlineHook::Hook(_In_ void *OrgProc, _In_ void *NewProc, _Out_ void **RealProc)
+BOOL libTools::CInlineHook::Hook(_In_ LPVOID OrgProc, _In_ LPVOID NewProc, _Out_ LPVOID* RealProc)
 {
 	return CLdrHeader::InlineHook(OrgProc, NewProc, RealProc);
 }

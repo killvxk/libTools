@@ -9,7 +9,7 @@ namespace libTools
 #define JMP_SIZE		5
 #define __malloc(_s)	VirtualAlloc(NULL, _s, MEM_COMMIT, PAGE_EXECUTE_READWRITE)
 #define __free(_p)		VirtualFree(_p, 0, MEM_RELEASE)
-	BOOL WINAPI CLdrHeader::WriteReadOnlyMemory(LPBYTE	lpDest, LPBYTE	lpSource, ULONG	Length)
+	BOOL WINAPI CLdrHeader::WriteReadOnlyMemory(_In_ LPBYTE	lpDest, _In_  LPBYTE	lpSource, _In_ ULONG	Length)
 	{
 		BOOL bRet;
 		DWORD dwOldProtect;
@@ -27,7 +27,7 @@ namespace libTools
 		return	bRet;
 	}
 
-	BOOL WINAPI CLdrHeader::GetPatchSize(IN	void *Proc,	 /* 需要Hook的函数地址 */IN	DWORD dwNeedSize,	/* Hook函数头部占用的字节大小 */OUT LPDWORD lpPatchSize	/* 返回根据函数头分析需要修补的大小 */)
+	BOOL WINAPI CLdrHeader::GetPatchSize(_In_ LPVOID Proc, /* 需要Hook的函数地址 */_In_ DWORD dwNeedSize, /* Hook函数头部占用的字节大小 */_Out_ LPDWORD lpPatchSize/* 返回根据函数头分析需要修补的大小 */)
 	{
 		DWORD Length;
 		PUCHAR pOpcode;
@@ -62,7 +62,7 @@ namespace libTools
 		return TRUE;
 	}
 
-	BOOL WINAPI CLdrHeader::InlineHook(_In_ void *OrgProc, _In_ void *NewProc, _Out_ void **RealProc)
+	BOOL WINAPI CLdrHeader::InlineHook(_In_ LPVOID OrgProc, _In_ LPVOID NewProc, _Out_ LPVOID* RealProc)
 	{
 		DWORD dwPatchSize;    // 得到需要patch的字节大小
 							  //DWORD dwOldProtect;
@@ -128,7 +128,7 @@ namespace libTools
 		return TRUE;
 	}
 
-	VOID WINAPI CLdrHeader::UnInlineHook(_In_ void *OrgProc, _In_ void *RealProc)
+	VOID WINAPI CLdrHeader::UnInlineHook(_In_ LPVOID OrgProc, _In_ LPVOID RealProc)
 	{
 		DWORD dwPatchSize;
 		//DWORD dwOldProtect;

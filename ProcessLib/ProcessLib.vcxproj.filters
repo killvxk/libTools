@@ -53,5 +53,8 @@
     <ClInclude Include="KeyboardMsg\KeyboardMsg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Common\ResHandleManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

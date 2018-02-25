@@ -1,5 +1,5 @@
-#ifndef __LIBTOOLS_PROCESS_KEYBOARDMSG_KEYBOARDMSG_H__
-#define __LIBTOOLS_PROCESS_KEYBOARDMSG_KEYBOARDMSG_H__
+#ifndef __LIBTOOLS_PROCESSLIB_KEYBOARDMSG_KEYBOARDMSG_H__
+#define __LIBTOOLS_PROCESSLIB_KEYBOARDMSG_KEYBOARDMSG_H__
 
 #include <Windows.h>
 
@@ -7,6 +7,38 @@ namespace libTools
 {
 	class CKeyboardMsg
 	{
+	public:
+		enum em_Custome_Key
+		{
+			VK_0			= 48,
+			VK_1			= 49,
+			VK_2			= 50,
+			VK_3			= 51,
+			VK_4			= 52,
+			VK_5			= 53,
+			VK_6			= 54,
+			VK_7			= 55,
+			VK_8			= 56,
+			VK_9			= 57,
+			VK_D			= 59,
+			VK_J			= 58,
+			VK_ARROW_TOP	= 38,
+			VK_ARROW_LEFT	= 37,
+			VK_ARROW_RIGHT	= 39,
+			VK_ARROW_DOWN	= 40,
+			VK_SHIFT_0		= 0x101,
+			VK_SHIFT_1		= 0x102,
+			VK_SHIFT_2		= 0x103,
+			VK_SHIFT_3		= 0x104,
+			VK_SHIFT_4		= 0x105,
+			VK_SHIFT_5		= 0x106,
+			VK_SHIFT_6		= 0x107,
+			VK_SHIFT_7		= 0x108,
+			VK_SHIFT_8		= 0x109,
+			VK_SHIFT_9		= 0x10A,
+			VK_SHIFT_D		= 0x10B,
+			VK_SHIFT_J		= 0x10C,
+		};
 	public:
 		CKeyboardMsg() = default;
 		~CKeyboardMsg() = default;
@@ -42,4 +74,4 @@ namespace libTools
 	};
 }
 
-#endif // !__LIBTOOLS_PROCESS_KEYBOARDMSG_KEYBOARDMSG_H__
+#endif // !__LIBTOOLS_PROCESSLIB_KEYBOARDMSG_KEYBOARDMSG_H__

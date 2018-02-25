@@ -545,13 +545,30 @@ namespace libTools
 			(*cPtr == 0xF0) || (*cPtr == 0xF2) || (*cPtr == 0xF3) ||
 			(*cPtr == 0x66) || (*cPtr == 0x67))
 		{
-			if (*cPtr == 0x66) PFX66 = TRUE;
-			if (*cPtr == 0x67) PFX67 = TRUE;
+
+			if (*cPtr == 0x66)
+			{
+				PFX66 = TRUE;
+			}
+
+
+			if (*cPtr == 0x67) 
+			{
+				PFX67 = TRUE;
+			}
+
+
 			cPtr++;
-			if (cPtr > (PUCHAR)Code + 16) return 0;
+			if (cPtr > (PUCHAR)Code + 16)
+			{
+				return 0;
+			}
 		}
 		Opcode = *cPtr;
-		if (pOpcode) *pOpcode = cPtr;
+		if (pOpcode)
+		{
+			*pOpcode = cPtr;
+		}
 
 		if (*cPtr == 0x0F)
 		{
@@ -562,10 +579,16 @@ namespace libTools
 		{
 			Flags = OpcodeFlags[Opcode];
 
-			if (Opcode >= 0xA0 && Opcode <= 0xA3) PFX66 = PFX67;
+			if (Opcode >= 0xA0 && Opcode <= 0xA3)
+			{
+				PFX66 = PFX67;
+			}
 		}
 		cPtr++;
-		if (Flags & OP_WORD) cPtr++;
+		if (Flags & OP_WORD)
+		{
+			cPtr++;
+		}
 
 		if (Flags & OP_MODRM)
 		{
@@ -574,36 +597,65 @@ namespace libTools
 			iRM = *cPtr & 7;
 			cPtr++;
 
-			if ((Opcode == 0xF6) && !iReg) Flags |= OP_DATA_I8;
-			if ((Opcode == 0xF7) && !iReg) Flags |= OP_DATA_PRE66_67;
+			if ((Opcode == 0xF6) && !iReg)
+			{
+				Flags |= OP_DATA_I8;
+			}
+			if ((Opcode == 0xF7) && !iReg)
+			{
+				Flags |= OP_DATA_PRE66_67;
+			}
 
 
 			SibPresent = !PFX67 & (iRM == 4);
 			switch (iMod)
 			{
 			case 0:
-				if (PFX67 && (iRM == 6)) OffsetSize = 2;
-				if (!PFX67 && (iRM == 5)) OffsetSize = 4;
+				if (PFX67 && (iRM == 6))
+				{
+					OffsetSize = 2;
+				}
+				if (!PFX67 && (iRM == 5))
+				{
+					OffsetSize = 4;
+				}
 				break;
-			case 1: OffsetSize = 1;
+			case 1: 
+				OffsetSize = 1;
 				break;
-			case 2: if (PFX67) OffsetSize = 2; else OffsetSize = 4;
+			case 2: 
+				OffsetSize = PFX67 != NULL ? 2 : 4;
 				break;
 			case 3: SibPresent = FALSE;
 			}
 			if (SibPresent)
 			{
-				if (((*cPtr & 7) == 5) && ((!iMod) || (iMod == 2))) OffsetSize = 4;
+				if (((*cPtr & 7) == 5) && ((!iMod) || (iMod == 2)))
+				{
+					OffsetSize = 4;
+				}
 				cPtr++;
 			}
 			cPtr = (PUCHAR)(ULONG)cPtr + OffsetSize;
 		}
 
-		if (Flags & OP_DATA_I8)  cPtr++;
-		if (Flags & OP_DATA_I16) cPtr += 2;
-		if (Flags & OP_DATA_I32) cPtr += 4;
-		if (PFX66) Add = 2; else Add = 4;
-		if (Flags & OP_DATA_PRE66_67) cPtr += Add;
+		if (Flags & OP_DATA_I8)
+		{
+			cPtr++;
+		}
+		if (Flags & OP_DATA_I16)
+		{
+			cPtr += 2;
+		}
+		if (Flags & OP_DATA_I32)
+		{
+			cPtr += 4;
+		}
+		Add = PFX66 != NULL ? 2 : 4;
+		if (Flags & OP_DATA_PRE66_67)
+		{
+			cPtr += Add;
+		}
 		return (ULONG)cPtr - (ULONG)Code;
 	}
 
@@ -617,8 +669,14 @@ namespace libTools
 		{
 			Length = SizeOfCode(Proc, &pOpcode);
 			Result += Length;
-			if ((Length == 1) && (*pOpcode == 0xC3)) break;
-			if ((Length == 3) && (*pOpcode == 0xC2)) break;
+			if ((Length == 1) && (*pOpcode == 0xC3))
+			{
+				break;
+			}
+			if ((Length == 3) && (*pOpcode == 0xC2))
+			{
+				break;
+			}
 			Proc = (PVOID)((ULONG)Proc + Length);
 		} while (Length);
 		return Result;
@@ -626,10 +684,7 @@ namespace libTools
 
 	char __fastcall CDasm::IsRelativeCmd(_In_ UCHAR *pOpcode) CONST
 	{
-		UCHAR Flags;
-		if (*pOpcode == 0x0F) Flags = OpcodeFlagsExt[*(PUCHAR)((ULONG)pOpcode + 1)];
-		else Flags = OpcodeFlags[*pOpcode];
-		return (Flags & OP_REL32);
+		return *pOpcode == 0x0F ? (OpcodeFlagsExt[*(PUCHAR)((ULONG)pOpcode + 1)] & OP_REL32) : (OpcodeFlags[*pOpcode] & OP_REL32);
 	}
 #endif
 }

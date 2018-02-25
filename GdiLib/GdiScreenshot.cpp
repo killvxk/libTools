@@ -1,7 +1,9 @@
 #include "GdiScreenshot.h"
 #include <include/LogLib/Log.h>
+#include <include/ProcessLib/Common/ResHandleManager.h>
 
 #pragma comment(lib,"LogLib.lib")
+#pragma comment(lib,"ProcessLib.lib")
 
 #define _SELF L"GdiScreenshot.cpp"
 BOOL libTools::CGdiScreenshot::Screenshot(_In_ HWND hWnd, _In_ CONST std::wstring& wsPath)

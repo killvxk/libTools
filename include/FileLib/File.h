@@ -47,7 +47,7 @@ namespace libTools
 		static BOOL WINAPI ClearFileContent(_In_ CONST std::wstring& cwsPath);
 
 		// Read File Content(have to use ::VirtualFree(lpFileContent,0,MEM_RELEASE) when free memory~)
-		static BOOL WINAPI ReadFileContent(_In_ CONST std::wstring& wsPath, _Out_ LPVOID& lpFileContent, _Out_ UINT& uSize);
+		static BOOL WINAPI ReadFileContent(_In_ CONST std::wstring& wsPath, _Out_ LPVOID& lpFileContent, _Out_ SIZE_T& uSize);
 
 		// Param1 = "\\Config.ini"
 		static BOOL WINAPI ReadUnicodeConfig(_In_ CONST std::wstring& wsConfigPath, _In_ CONST std::wstring& wsConfigText, _In_ CONST std::wstring& wsConfigKey, _Out_ std::wstring& wsConfigValue);
@@ -57,6 +57,9 @@ namespace libTools
 
 		// Get File Size
 		static BOOL WINAPI ReadAsciiFileLen(_In_ CONST std::wstring& cwsPath, _Out_ ULONG& ulFileLen);
+
+		// Directory is Exist
+		static BOOL WINAPI DirectoryExist(_In_ CONST std::wstring& wsPath);
 	};
 
 }

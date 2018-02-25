@@ -1,5 +1,5 @@
-#ifndef __LIBTOOLS_PROCESS_THREAD_THREAD_H__
-#define __LIBTOOLS_PROCESS_THREAD_THREAD_H__
+#ifndef __LIBTOOLS_PROCESSLIB_THREAD_THREAD_H__
+#define __LIBTOOLS_PROCESSLIB_THREAD_THREAD_H__
 
 #include <Windows.h>
 
@@ -17,4 +17,4 @@ namespace libTools
 	};
 }
 
-#endif // !__LIBTOOLS_PROCESS_THREAD_THREAD_H__
+#endif // !__LIBTOOLS_PROCESSLIB_THREAD_THREAD_H__
