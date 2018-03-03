@@ -1,6 +1,8 @@
 #ifndef __LIBTOOLS_PROCESSLIB_COMMON_RESHANDLEMANAGER_H__
 #define __LIBTOOLS_PROCESSLIB_COMMON_RESHANDLEMANAGER_H__
 
+#include <functional>
+
 namespace libTools
 {
 #define SetResDeleter(VarName, Deleter) CResManager<decltype(VarName),std::function<VOID(decltype(VarName)&)>> VarName##Manager(VarName,Deleter)

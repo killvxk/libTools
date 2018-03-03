@@ -26,7 +26,7 @@ BOOL libTools::CDllInjector::RemoteThreadInjectorDLL(_In_ DWORD dwPid, _In_ CONS
 		::CloseHandle(hProcess);
 		return FALSE;
 	}
-	SetResDeleter(pAllocMem, [=](LPVOID& p) { VirtualFreeEx(hProcess, p, 0, MEM_RELEASE); });
+	SetResDeleter(pAllocMem, [=](LPVOID& p) { ::VirtualFreeEx(hProcess, p, 0, MEM_RELEASE); });
 	SetResDeleter(hProcess, [](HANDLE& hProcess) { ::CloseHandle(hProcess); });
 
 

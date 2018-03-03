@@ -1,5 +1,6 @@
 #include "SearchBinary.h"
 #include "Memory.h"
+#pragma comment(lib,"user32.lib")
 
 DWORD libTools::CSearchBinary::FindAddr(LPCSTR lpszCode, int nOffset, int nOrderNum, LPCWSTR lpszModule)
 {

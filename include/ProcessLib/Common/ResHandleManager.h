@@ -18,7 +18,6 @@ namespace libTools
 		~CResManager()
 		{
 			m_fnDeletePtr(m_ResHandle);
-			m_ResHandle = NULL;
 		}
 
 		CResManager& operator=(CONST CResManager&) = delete;
