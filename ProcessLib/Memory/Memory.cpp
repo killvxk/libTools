@@ -36,7 +36,7 @@ FLOAT libTools::CMemory::ReadFloat(_In_ UINT_PTR dwAddr)
 	return ReadMemoryValue<FLOAT>(dwAddr);
 }
 
-DOUBLE libTools::CMemory::ReadDouble(_In_ UINT_PTR dwAddr)
+double libTools::CMemory::ReadDouble(_In_ UINT_PTR dwAddr)
 {
 	return ReadMemoryValue<DOUBLE>(dwAddr);
 }

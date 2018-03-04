@@ -74,7 +74,7 @@ namespace libTools
 	private:
 		BOOL   _bAlloc = FALSE;
 		LPVOID _pvFileContent = nullptr;
-		UINT   _uFileSize = NULL;
+		SIZE_T _uFileSize = NULL;
 	};
 }
 

@@ -35,10 +35,10 @@ namespace libTools
 		static BOOL UnHook(_In_ _Out_ HookContent* pHookContent);
 
 		// Hook(需要Hook的函数地址,代替被Hook函数的地址,返回原始函数的入口地址)
-		static BOOL Hook(_In_ void *OrgProc, _In_ void *NewProc, _Out_ void **RealProc);
+		static BOOL Hook(_In_ LPVOID OrgProc, _In_ LPVOID NewProc, _Out_ LPVOID* RealProc);
 
 		// UnHook(需要恢复Hook的函数地址,原始函数的入口地址)
-		static BOOL UnHook(_In_ void *OrgProc, _In_ void *RealProc);
+		static BOOL UnHook(_In_ LPVOID OrgProc, _In_ LPVOID RealProc);
 	private:
 
 	};

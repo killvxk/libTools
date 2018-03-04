@@ -137,7 +137,7 @@ namespace libTools
 		if (!wsParm.empty())
 			VecParm.push_back(wsParm);
 
-		auto uParamCount = GetCount_By_SpecifyText(wsText, std::wstring(L",")) + 1;
+		auto uParamCount = GetCount_By_SpecifyText(wsText, L",") + 1;
 		while (VecParm.size() < uParamCount)
 		{
 			VecParm.push_back(L"");
@@ -153,7 +153,7 @@ namespace libTools
 		for (CONST auto& itm : VecFormatText)
 		{
 			std::wstring wsResult;
-			GetRemoveLeft(wsVarText, itm, wsResult);
+			GetRemoveLeft(wsVarText, itm.c_str(), wsResult);
 
 
 			if (!wsResult.empty())
@@ -162,7 +162,7 @@ namespace libTools
 			}
 
 
-			GetRemoveRight(wsVarText, itm, wsVarText);
+			GetRemoveRight(wsVarText, itm.c_str(), wsVarText);
 		}
 
 

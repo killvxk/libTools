@@ -15,12 +15,12 @@ namespace libTools
 		~CCharacter() = default;
 
 		template<typename T>
-		static void strcpy_my(_In_ T * dest, _In_ CONST T * src)
+		static void strcpy_my(_In_ T * dest, _In_ CONST T * src, _In_opt_ SIZE_T MaxSize = 1024)
 		{
 			CException::InvokeAction(__FUNCTIONW__, [&]
 			{
 				size_t len = strlen_my(src);
-				for (size_t i = 0; i < len; ++i)
+				for (size_t i = 0; i < len && i < MaxSize; ++i)
 				{
 					*(dest + i) = *(src + i);
 				}
@@ -82,7 +82,7 @@ namespace libTools
 		}
 
 		template<typename T>
-		static void GetRemoveLeft(_In_ CONST std::basic_string<T>& wsText, _In_ CONST std::basic_string<T>& wsParm, _Out_ std::basic_string<T>& wsRetText)
+		static void GetRemoveLeft(_In_ CONST std::basic_string<T>& wsText, _In_ CONST T* wsParm, _Out_ std::basic_string<T>& wsRetText)
 		{
 			size_t nIndex = wsText.find(wsParm);
 			if (nIndex != -1)
@@ -92,17 +92,17 @@ namespace libTools
 		}
 
 		template<typename T>
-		static void GetRemoveRight(_In_ CONST std::basic_string<T>& wsText, _In_ CONST std::basic_string<T>& wsParm, _Out_ std::basic_string<T>& wsRetText)
+		static void GetRemoveRight(_In_ CONST std::basic_string<T>& wsText, _In_ CONST T* wsParm, _Out_ std::basic_string<T>& wsRetText)
 		{
 			size_t nIndex = wsText.find(wsParm);
 			if (nIndex != -1)
 			{
-				wsRetText = wsText.substr(nIndex + wsParm.length());
+				wsRetText = wsText.substr(nIndex + strlen_my(wsParm));
 			}
 		}
 
 		template<typename T>
-		static UINT GetCount_By_SpecifyText(_In_ CONST std::basic_string<T>& wsText, _In_ CONST std::basic_string<T>& wsSpecifyText)
+		static UINT GetCount_By_SpecifyText(_In_ CONST std::basic_string<T>& wsText, _In_ CONST T* wsSpecifyText)
 		{
 			UINT uCount = 0;
 			for (std::size_t pos = 0;; ++uCount, ++pos)
@@ -137,7 +137,7 @@ namespace libTools
 		};
 		//
 		template<typename T>
-		static void Split(_In_ CONST std::basic_string<T>& wsText, _In_ CONST std::basic_string<T>& wsFormat, _Out_opt_ std::vector<std::basic_string<T>>& vlst, _In_opt_ em_Split_Option emOption)
+		static void Split(_In_ CONST std::basic_string<T>& wsText, _In_ CONST T* wsFormat, _Out_opt_ std::vector<std::basic_string<T>>& vlst, _In_opt_ em_Split_Option emOption)
 		{
 			std::basic_string<T> wsTmpText = wsText;
 			size_t nIndex = wsTmpText.find(wsFormat);
@@ -154,7 +154,7 @@ namespace libTools
 					vlst.push_back(wstr);
 				}
 
-				wsTmpText = wsTmpText.substr(nIndex + wsFormat.length());
+				wsTmpText = wsTmpText.substr(nIndex + strlen_my(wsFormat));
 				nIndex = wsTmpText.find(wsFormat);
 			}
 			if (!wsTmpText.empty() || vlst.size() > 0 || (emOption & em_Split_Option_KeepOnly))

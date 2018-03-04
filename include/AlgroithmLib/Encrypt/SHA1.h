@@ -1,5 +1,5 @@
-#ifndef __LIBTOOLS_ALGORITHM_ENCRYP_SHA1_H__
-#define __LIBTOOLS_ALGORITHM_ENCRYP_SHA1_H__
+#ifndef __LIBTOOLS_ALGORMTHMLIB_ENCRYP_SHA1_H__
+#define __LIBTOOLS_ALGORMTHMLIB_ENCRYP_SHA1_H__
 
 #include <Windows.h>
 #include <string>
@@ -38,4 +38,4 @@ namespace libTools
 	};
 }
 
-#endif // !__LIBTOOLS_ALGORITHM_ENCRYP_SHA1_H__
+#endif // !__LIBTOOLS_ALGORMTHMLIB_ENCRYP_SHA1_H__
