@@ -43,7 +43,11 @@ BOOL libTools::CIATHook::Hook(_In_ CONST std::string& szDLLName, _In_ CONST std:
 				IMAGE_IMPORT_BY_NAME* pImageImportName = reinterpret_cast<IMAGE_IMPORT_BY_NAME *>(dwImageBase + pOriginThunk->u1.AddressOfData);
 				if (strcmp(pImageImportName->Name, szMethodName.c_str()) == 0)
 				{
-					*pRealProcPtr = reinterpret_cast<LPVOID>(pRealThunk->u1.Function);
+					if (pRealProcPtr != nullptr)
+					{
+						*pRealProcPtr = reinterpret_cast<LPVOID>(pRealThunk->u1.Function);
+					}
+
 
 					DWORD dwOldProtect = NULL;
 					::VirtualProtect(&pRealThunk->u1.Function, 8, PAGE_EXECUTE_READWRITE, &dwOldProtect);
