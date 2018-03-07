@@ -1,9 +1,12 @@
 #include "DllInjector.h"
 #include <Shlwapi.h>
 #include <include/ProcessLib/Common/ResHandleManager.h>
+#include <include/LogLib/Log.h>
 
 #pragma comment(lib,"ProcessLib.lib")
+#pragma comment(lib,"LogLib.lib")
 
+#define _SELF L"DllInjector.cpp"
 BOOL libTools::CDllInjector::RemoteThreadInjectorDLL(_In_ DWORD dwPid, _In_ CONST std::wstring& wsDllPath)
 {
 	// RaisePrivilige
@@ -15,6 +18,7 @@ BOOL libTools::CDllInjector::RemoteThreadInjectorDLL(_In_ DWORD dwPid, _In_ CONS
 	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPid);
 	if (hProcess == NULL)
 	{
+		LOG_C_E(L"OpenProcess = NULL, Error=%d", ::GetLastError());
 		return FALSE;
 	}
 	
@@ -23,16 +27,18 @@ BOOL libTools::CDllInjector::RemoteThreadInjectorDLL(_In_ DWORD dwPid, _In_ CONS
 	LPVOID pAllocMem = VirtualAllocEx(hProcess, NULL, dwDLLSize, MEM_COMMIT, PAGE_READWRITE);
 	if (pAllocMem == nullptr)
 	{
+		LOG_C_E(L"VirtualAllocEx = NULL, Error=%d", ::GetLastError());
 		::CloseHandle(hProcess);
 		return FALSE;
 	}
-	SetResDeleter(pAllocMem, [=](LPVOID& p) { ::VirtualFreeEx(hProcess, p, 0, MEM_RELEASE); });
-	SetResDeleter(hProcess, [](HANDLE& hProcess) { ::CloseHandle(hProcess); });
+	SetResDeleter(pAllocMem, [=](LPVOID& p) { ::VirtualFreeEx(hProcess, p, 0, MEM_RELEASE); p = nullptr; });
+	SetResDeleter(hProcess, [](HANDLE& hProcess) { ::CloseHandle(hProcess); hProcess = NULL; });
 
 
-	//将DLL的路径名复制到远程进程的地址空间  
+	//将DLL的路径名复制到远程进程的地址空间
 	if(!WriteProcessMemory(hProcess, pAllocMem, reinterpret_cast<LPCVOID>(wsDllPath.c_str()), dwDLLSize, NULL))
 	{
+		LOG_C_E(L"WriteProcessMemory = FALSE, Error=%d", ::GetLastError());
 		return FALSE;
 	}
 
@@ -42,13 +48,15 @@ BOOL libTools::CDllInjector::RemoteThreadInjectorDLL(_In_ DWORD dwPid, _In_ CONS
 	HMODULE hmKernel32 = ::GetModuleHandleW(L"kernel32.dll");
 	if (hmKernel32 == NULL)
 	{
+		LOG_C_E(L"GetModuleHandleW = FALSE, Error=%d", ::GetLastError());
 		return FALSE;
 	}
 
 
-	PTHREAD_START_ROUTINE pfnThreadRrn = reinterpret_cast<PTHREAD_START_ROUTINE>(GetProcAddress(hmKernel32, "LoadLibraryW"));
+	PTHREAD_START_ROUTINE pfnThreadRrn = reinterpret_cast<PTHREAD_START_ROUTINE>(::GetProcAddress(hmKernel32, "LoadLibraryW"));
 	if (pfnThreadRrn == NULL)
 	{
+		LOG_C_E(L"GetProcAddress = FALSE, Error=%d", ::GetLastError());
 		return FALSE;
 	}
 
@@ -56,13 +64,14 @@ BOOL libTools::CDllInjector::RemoteThreadInjectorDLL(_In_ DWORD dwPid, _In_ CONS
 	HANDLE hThread = CreateRemoteThread(hProcess, NULL, 0, pfnThreadRrn, pAllocMem, 0, NULL);
 	if (hThread == NULL)
 	{
+		LOG_C_E(L"CreateRemoteThread = FALSE, Error=%d", ::GetLastError());
 		return FALSE;
 	}
 	
 
 	//等待远程线程终止  
 	WaitForSingleObject(hThread, INFINITE);
-	SetResDeleter(hThread, [](HANDLE& hThread) { ::CloseHandle(hThread); });
+	SetResDeleter(hThread, [](HANDLE& hThread) { ::CloseHandle(hThread); hThread = NULL; });
 	return TRUE;
 }
 

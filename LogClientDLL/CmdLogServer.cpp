@@ -52,12 +52,18 @@ VOID CCmdLogServer::Stop()
 {
 	_Run = FALSE;
 
-	::shutdown(_servSocket, SD_BOTH);
-	::closesocket(_servSocket);
-	_servSocket = INVALID_SOCKET;
+
+	if (_servSocket != INVALID_SOCKET)
+	{
+		::shutdown(_servSocket, SD_BOTH);
+		::closesocket(_servSocket);
+		_servSocket = INVALID_SOCKET;
+	}
 
 	if (_hAcceptThread != NULL)
+	{
 		::WaitForSingleObject(_hAcceptThread, INFINITE);
+	}
 }
 
 VOID CCmdLogServer::SendContent(_In_ CONST std::wstring& wsClientName, _In_ CONST std::wstring& wsContent)

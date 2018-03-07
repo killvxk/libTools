@@ -131,8 +131,8 @@ namespace libTools
 		bool				   _bRun;
 		std::wstring           _wsLogPath;
 		std::wstring           _wsClientName;
-		HANDLE                 hSaveLogEvent;
-		HANDLE                 hSendExitEvent;
+		HANDLE                 _hSendThread;
+		HANDLE                 _hSaveThread;
 		std::mutex             _MtxFormLogContent;
 		std::mutex             _MtxSaveLogContent;
 		LogFormContent         _LogFormContent;

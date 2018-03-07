@@ -77,7 +77,7 @@ BOOL libTools::CProcess::GetVecProcess(_Out_ std::vector<ProcessContent>& VecPro
 	HANDLE hThSnap32 = NULL;
 	PROCESSENTRY32W pe32;
 
-	hThSnap32 = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	hThSnap32 = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	if (hThSnap32 == INVALID_HANDLE_VALUE)
 	{
 		return FALSE;
@@ -95,7 +95,7 @@ BOOL libTools::CProcess::GetVecProcess(_Out_ std::vector<ProcessContent>& VecPro
 	{
 		ProcessContent PC;
 		PC.dwPid = pe32.th32ProcessID;
-		PC.wsClientName = libTools::CCharacter::MakeTextToLower(std::wstring(PC.wsClientName));
+		PC.wsClientName = libTools::CCharacter::MakeTextToLower(std::wstring(pe32.szExeFile));
 		VecProc.push_back(PC);
 	} while (Process32NextW(hThSnap32, &pe32));
 	::CloseHandle(hThSnap32);

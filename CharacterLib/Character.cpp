@@ -10,13 +10,13 @@ namespace libTools
 		std::string str;
 		CException::InvokeAction(__FUNCTIONW__, [&]
 		{
-			int ansiLen = ::WideCharToMultiByte(CP_ACP, NULL, wstr.c_str(), wstr.length(), NULL, 0, NULL, NULL);
-			char* szAnsi = new char[ansiLen + 1];
-			ZeroMemory(szAnsi, ansiLen + 1);
+			int ansiLen = ::WideCharToMultiByte(CP_ACP, NULL, wstr.c_str(), wstr.length(), NULL, 0, NULL, NULL) + 1;
+			char* szAnsi = new char[ansiLen];
+			ZeroMemory(szAnsi, ansiLen * sizeof(CHAR));
 
 
 			::WideCharToMultiByte(CP_ACP, NULL, wstr.c_str(), wstr.length(), szAnsi, ansiLen, NULL, NULL);
-			szAnsi[ansiLen] = '\0';
+			szAnsi[ansiLen - 1] = '\0';
 
 			str = szAnsi;
 			delete[] szAnsi;
@@ -30,14 +30,14 @@ namespace libTools
 		std::wstring str;
 		CException::InvokeAction(__FUNCTIONW__, [&]
 		{
-			int cchWideChar = MultiByteToWideChar(CP_ACP, 0, pszText.c_str(), -1, NULL, 0);
+			int cchWideChar = MultiByteToWideChar(CP_ACP, 0, pszText.c_str(), -1, NULL, 0) + 1;
 
 			WCHAR* ptszText = new wchar_t[cchWideChar];
-			ZeroMemory(ptszText, cchWideChar);
+			ZeroMemory(ptszText, cchWideChar * sizeof(WCHAR));
 
 			MultiByteToWideChar(CP_ACP, 0, pszText.c_str(), -1, ptszText, cchWideChar);
 
-			ptszText[cchWideChar] = '\0';
+			ptszText[cchWideChar - 1] = '\0';
 			str = ptszText;
 			delete[] ptszText;
 		});
@@ -45,19 +45,19 @@ namespace libTools
 		return str;
 	}
 
-	std::wstring CCharacter::UTF8ToUnicode(_In_ CONST std::string pszText)
+	std::wstring CCharacter::UTF8ToUnicode(_In_ CONST std::string& pszText)
 	{
 		std::wstring str;
 		CException::InvokeAction(__FUNCTIONW__, [&]
 		{
-			int cchWideChar = MultiByteToWideChar(CP_UTF8, 0, pszText.c_str(), -1, NULL, 0);
+			int cchWideChar = MultiByteToWideChar(CP_UTF8, 0, pszText.c_str(), -1, NULL, 0) + 1;
 
-			WCHAR* ptszText = new wchar_t[cchWideChar];
-			ZeroMemory(ptszText, cchWideChar);
+			WCHAR* ptszText = new WCHAR[cchWideChar];
+			ZeroMemory(ptszText, cchWideChar * sizeof(WCHAR));
 
-			MultiByteToWideChar(CP_ACP, 0, pszText.c_str(), -1, ptszText, cchWideChar);
+			MultiByteToWideChar(CP_UTF8, 0, pszText.c_str(), -1, ptszText, cchWideChar);
 
-			ptszText[cchWideChar] = '\0';
+			ptszText[cchWideChar - 1] = '\0';
 			str = ptszText;
 			delete[] ptszText;
 		});
@@ -70,13 +70,13 @@ namespace libTools
 		std::string str;
 		CException::InvokeAction(__FUNCTIONW__, [&]
 		{
-			DWORD dwLen = ::WideCharToMultiByte(CP_UTF8, NULL, wsText.c_str(), static_cast<int>(wsText.length()), NULL, NULL, NULL, NULL);
-			char* pszUTF8 = new char[dwLen + 1];
-			ZeroMemory(pszUTF8, dwLen + 1);
+			DWORD dwLen = ::WideCharToMultiByte(CP_UTF8, NULL, wsText.c_str(), static_cast<int>(wsText.length()), NULL, NULL, NULL, NULL) + 1;
+			CHAR* pszUTF8 = new CHAR[dwLen];
+			ZeroMemory(pszUTF8, dwLen * sizeof(CHAR));
 
 
 			::WideCharToMultiByte(CP_UTF8, NULL, wsText.c_str(), static_cast<int>(wsText.length()), pszUTF8, dwLen, NULL, NULL);
-			pszUTF8[dwLen] = '\0';
+			pszUTF8[dwLen - 1] = '\0';
 
 			str = pszUTF8;
 			delete[] pszUTF8;

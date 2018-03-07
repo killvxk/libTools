@@ -9,12 +9,12 @@
 #pragma comment(lib,"ExceptionLib.lib")
 #pragma comment(lib,"CharacterLib.lib")
 #pragma comment(lib,"ProcessLib.lib")
-#pragma comment(lib,"user32") // GetWindowTextW
+#pragma comment(lib,"user32.lib") // GetWindowTextW
 
 #define _SELF L"Log.cpp"
 libTools::CLog::CLog() : _wsClientName(L"Empty"), _bRun(false), _bSync(false), _InfiniteSave(false)
 {
-
+	_hSaveThread = _hSendThread = NULL;
 }
 
 libTools::CLog::~CLog()
@@ -68,25 +68,22 @@ VOID libTools::CLog::Print(_In_ LPCWSTR pwszFunName, _In_ LPCWSTR pwszFileName, 
 VOID libTools::CLog::Release()
 {
 	_bRun = false;
-	if (hSendExitEvent != NULL)
+	if (_hSaveThread != NULL)
 	{
-		::WaitForSingleObject(hSendExitEvent, INFINITE);
-		::CloseHandle(hSendExitEvent);
-		hSendExitEvent = NULL;
+		::WaitForSingleObject(_hSaveThread, 1000);
+		::CloseHandle(_hSaveThread);
+		_hSaveThread = NULL;
 	}
-	if (hSaveLogEvent != NULL)
+	if (_hSaveThread != NULL)
 	{
-		::WaitForSingleObject(hSaveLogEvent, INFINITE);
-		::CloseHandle(hSaveLogEvent);
-		hSaveLogEvent = NULL;
+		::WaitForSingleObject(_hSendThread, 1000);
+		::CloseHandle(_hSendThread);
+		_hSendThread = NULL;
 	}
 }
 
 VOID libTools::CLog::SetClientName(_In_ CONST std::wstring& cwsClientName, _In_ CONST std::wstring wsSaveLogPath)
 {
-	hSendExitEvent = ::CreateEventW(NULL, FALSE, FALSE, NULL);
-	hSaveLogEvent = ::CreateEventW(NULL, FALSE, FALSE, NULL);
-
 	_wsClientName = cwsClientName;
 
 	SYSTEMTIME CurrentSysTime;
@@ -104,21 +101,19 @@ VOID libTools::CLog::SetClientName(_In_ CONST std::wstring& cwsClientName, _In_ 
 		static_cast<DWORD>(CurrentSysTime.wMinute),
 		static_cast<DWORD>(CurrentSysTime.wSecond));
 
-	HANDLE hSendThread = reinterpret_cast<HANDLE>(::_beginthreadex(NULL, NULL, reinterpret_cast<_beginthreadex_proc_type>(_SendThread), this, NULL, NULL));
-	if (hSendThread == NULL)
+	_hSendThread = reinterpret_cast<HANDLE>(::_beginthreadex(NULL, NULL, reinterpret_cast<_beginthreadex_proc_type>(_SendThread), this, NULL, NULL));
+	if (_hSendThread == NULL)
 	{
 		::MessageBoxW(NULL, L"CreateThread _SendThread Faild!", L"Error", NULL);
 		return;
 	}
-	::CloseHandle(hSendThread);
 
-	HANDLE hSaveThread = reinterpret_cast<HANDLE>(::_beginthreadex(NULL, NULL, reinterpret_cast<_beginthreadex_proc_type>(_SaveThread), this, NULL, NULL));
-	if (hSaveThread == NULL)
+	_hSaveThread = reinterpret_cast<HANDLE>(::_beginthreadex(NULL, NULL, reinterpret_cast<_beginthreadex_proc_type>(_SaveThread), this, NULL, NULL));
+	if (_hSaveThread == NULL)
 	{
 		::MessageBoxW(NULL, L"CreateThread _SaveThread Faild!", L"Error", NULL);
 		return;
 	}
-	::CloseHandle(hSaveThread);
 }
 
 VOID libTools::CLog::SetClientName(_In_ CONST std::wstring& cwsClientName)
@@ -142,6 +137,7 @@ DWORD WINAPI libTools::CLog::_SendThread(LPVOID lpParm)
 {
 	auto pTestLog = reinterpret_cast<CLog*>(lpParm);
 	LogContent LogContent_;
+
 	while (pTestLog->_bRun)
 	{
 		if (!pTestLog->ExistLogServer())
@@ -151,19 +147,21 @@ DWORD WINAPI libTools::CLog::_SendThread(LPVOID lpParm)
 			continue;
 		}
 
-		auto StartTick = std::chrono::system_clock::now();
-		while (pTestLog->_bRun && (std::chrono::system_clock::now() - StartTick).count() < 3000 * 10000)
+		CException::InvokeAction(__FUNCTIONW__, [&]
 		{
-			if (!pTestLog->GetLogContentForQueue(LogContent_))
+			auto StartTick = std::chrono::system_clock::now();
+			while (pTestLog->_bRun && (std::chrono::system_clock::now() - StartTick).count() < 3000 * 10000)
 			{
-				::Sleep(50);
-				continue;
-			}
+				if (!pTestLog->GetLogContentForQueue(LogContent_))
+				{
+					::Sleep(50);
+					continue;
+				}
 
-			pTestLog->SendLogToForm(LogContent_);
-		}
+				pTestLog->SendLogToForm(LogContent_);
+			}
+		});
 	}
-	::SetEvent(pTestLog->hSendExitEvent);
 	return 0;
 }
 
@@ -322,7 +320,7 @@ VOID libTools::CLog::SendLogToForm(_In_ CONST LogContent& Content) CONST
 {
 	CException::InvokeAction(__FUNCTIONW__, [&]
 	{
-		auto wsText = libTools::CCharacter::MakeFormatText(L"%d\r\n%s\r\n%s\r\n%d\r\n%s\r\n%s",
+		std::wstring wsText = libTools::CCharacter::MakeFormatText(L"%d\r\n%s\r\n%s\r\n%d\r\n%s\r\n%s",
 			static_cast<int>(Content.emLogType),
 			Content.wsFunName.c_str(),
 			Content.wsFileName.c_str(),
@@ -337,6 +335,7 @@ VOID libTools::CLog::SendLogToForm(_In_ CONST LogContent& Content) CONST
 		cd.dwData = 0x4C6F67;
 		cd.lpData = wsTextPtr.get();
 		cd.cbData = static_cast<DWORD>((wsText.length() + 1) * 2);
+
 
 		::SendMessageW(_LogFormContent.hWnd, WM_COPYDATA, reinterpret_cast<WPARAM>(&cd), reinterpret_cast<LPARAM>(&cd));
 	});
@@ -353,12 +352,15 @@ BOOL CALLBACK libTools::CLog::EnumSetWinName(HWND hWnd, LPARAM lpParam)
 		WCHAR wszWinText[64] = { 0 };
 		WCHAR wszWinClass[64] = { 0 };
 
-		if (GetClassNameW(hWnd, wszWinClass, _countof(wszWinClass) / sizeof(WCHAR)) > 0 && GetWindowTextW(hWnd, wszWinText, _countof(wszWinText)) > 0)
+		if (GetClassNameW(hWnd, wszWinClass, _countof(wszWinClass) - 1) > 0 && GetWindowTextW(hWnd, wszWinText, _countof(wszWinText) - 1) > 0)
 		{
-			std::wstring wsWinClass = wszWinClass;
-			if (wsWinClass.find(L"WindowsForms10.Window") != std::wstring::npos)//如果能遍历到这个,并且是
+			if (std::wstring(wszWinText) == L"LogForm" && std::wstring(wszWinClass).find(L"WindowsForms10.Window") != std::wstring::npos)//如果能遍历到这个,并且是
 			{
 				LogFormContent* pContent = reinterpret_cast<LogFormContent*>(lpParam);
+				if (pContent == nullptr)
+				{
+					return TRUE;
+				}
 
 				DWORD PID;
 				::GetWindowThreadProcessId(hWnd, &PID);
@@ -376,7 +378,7 @@ BOOL CALLBACK libTools::CLog::EnumSetWinName(HWND hWnd, LPARAM lpParam)
 BOOL libTools::CLog::ExistLogServer()
 {
 	_LogFormContent.dwPid = CProcess::FindPidByProcName(L"Log.exe");
-	if (_LogFormContent.dwPid != NULL)
+	if (_LogFormContent.dwPid != 0xFFFFFFFF)
 	{
 		_LogFormContent.hWnd = NULL;
 		EnumWindows(EnumSetWinName, reinterpret_cast<LPARAM>(&_LogFormContent));
@@ -391,23 +393,26 @@ DWORD WINAPI libTools::CLog::_SaveThread(LPVOID lpParm)
 {
 	auto pLog = reinterpret_cast<CLog*>(lpParm);
 	LogContent LogContent_;
-	while (pLog->_bRun)
+
+	CException::InvokeAction(__FUNCTIONW__, [=] 
 	{
-		if (pLog->_bSync)
+		while (pLog->_bRun)
 		{
-			pLog->SaveLog_Immediately(TRUE);
-			::Sleep(500);
-			continue;
-		}
+			if (pLog->_bSync)
+			{
+				pLog->SaveLog_Immediately(TRUE);
+				::Sleep(500);
+				continue;
+			}
 
-		if (!pLog->IsSaveLog())
-		{
-			::Sleep(500);
-			continue;
-		}
+			if (!pLog->IsSaveLog())
+			{
+				::Sleep(500);
+				continue;
+			}
 
-		pLog->ClearSaveLog();
-	}
-	::SetEvent(pLog->hSaveLogEvent);
+			pLog->ClearSaveLog();
+		}
+	});
 	return 0;
 }
