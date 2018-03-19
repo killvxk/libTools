@@ -142,6 +142,7 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
     <ClCompile Include="Encrypt\CRC32.cpp" />
     <ClCompile Include="Encrypt\MD5.cpp" />
     <ClCompile Include="Encrypt\RC4.cpp" />
+    <ClCompile Include="Encrypt\RSA.cpp" />
     <ClCompile Include="Encrypt\SHA1.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@ xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /
     <ClInclude Include="Encrypt\CRC32.h" />
     <ClInclude Include="Encrypt\MD5.h" />
     <ClInclude Include="Encrypt\RC4.h" />
+    <ClInclude Include="Encrypt\RSA.h" />
     <ClInclude Include="Encrypt\SHA1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

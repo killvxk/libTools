@@ -30,6 +30,9 @@
     <ClCompile Include="Encrypt\SHA1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Encrypt\RSA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\CommonCharacter.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Encrypt\SHA1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Encrypt\RSA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
