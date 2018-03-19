@@ -130,3 +130,11 @@ VOID libTools::CTimeCharacter::FormatTime(_In_ ULONGLONG ulResult, _Out_opt_ std
 	ulSecond = ulResult;
 	wsText = CCharacter::MakeFormatText(L"%I64dDay %I64dHour %I64dMin %I64dSec", ulDay, ulHour, ulMin, ulSecond);
 }
+
+VOID libTools::CTimeCharacter::FormatTime(_Out_ std::wstring& wsText)
+{
+	SYSTEMTIME SysTime = { 0 };
+	::GetLocalTime(&SysTime);
+
+	wsText = CCharacter::MakeFormatText(L"%d-%d-%d %d:%d:%d", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
+}
