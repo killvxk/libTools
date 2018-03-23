@@ -2,7 +2,7 @@
 #define __LIBTOOLS_CHARACTERLIB_CHARACTER_H__
 
 #include <vector>
-#include <include/ExceptionLib/Exception.h>
+#include <ExceptionLib/Exception.h>
 
 
 

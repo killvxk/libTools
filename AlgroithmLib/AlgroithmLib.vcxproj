@@ -98,6 +98,7 @@ xcopy "$(ProjectDir)Encrypt\CRC32.h" "$(SolutionDir)include\$(ProjectName)\Encry
 xcopy "$(ProjectDir)Encrypt\MD5.h" "$(SolutionDir)include\$(ProjectName)\Encrypt\" /Y
 xcopy "$(ProjectDir)Encrypt\RC4.h" "$(SolutionDir)include\$(ProjectName)\Encrypt\" /Y
 xcopy "$(ProjectDir)Encrypt\SHA1.h" "$(SolutionDir)include\$(ProjectName)\Encrypt\" /Y
+xcopy "$(ProjectDir)Encrypt\RSA.h" "$(SolutionDir)include\$(ProjectName)\Encrypt\" /Y
 xcopy "$(SolutionDir)$(Configuration)\$(TargetFileName)"  "$(SolutionDir)lib\" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

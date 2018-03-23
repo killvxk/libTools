@@ -18,7 +18,7 @@ namespace libTools
 			SQLHDBC hDbc = SQL_NULL_HDBC;
 			SQLHSTMT hStmt = SQL_NULL_HSTMT;
 		};
-	protected:
+	public:
 		typedef std::vector<std::wstring> Table;
 	public:
 		CBaseDbManager() = default;

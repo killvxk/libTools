@@ -16,6 +16,7 @@
 #pragma comment(lib,"SocketCommonLib.lib")
 #pragma comment(lib,"CharacterLib.lib")
 #pragma comment(lib,"TimeLib.lib")
+#pragma comment(lib,"Ws2_32.lib")
 
 #define _SELF L"SocketBaseServerService.cpp"
 libTools::CSocketBaseServerService::ServerThreadContent* libTools::CSocketBaseServerService::ServerThreadContent::Create(_In_ CSocketBaseServerService* pServer_, _In_ LPVOID Reserve_ /*= nullptr*/)
@@ -38,7 +39,8 @@ _pServerTpIo(nullptr),
 _uMaxClientCount(NULL),
 _pClent_Tp_Ggoup(nullptr),
 _bRun(FALSE),
-_uAccpetCount(0)
+_uAccpetCount(0),
+_hClearThread(NULL)
 {
 	ZeroMemory(&_Client_Tp_Env, sizeof(_Client_Tp_Env));
 
@@ -109,6 +111,7 @@ BOOL libTools::CSocketBaseServerService::Run(_In_ SHORT shPort, _In_ UINT uMaxAc
 
 	// Run Thread Pool Worker
 	_bRun = TRUE;
+	_hClearThread = ::CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)_ClearThread, this, NULL, NULL);
 	return TRUE;
 }
 
@@ -147,6 +150,13 @@ VOID libTools::CSocketBaseServerService::Stop()
 		LOG_CF_D(L"Close 线程池环境!");
 		::DestroyThreadpoolEnvironment(&_Client_Tp_Env);
 		ZeroMemory(&_Client_Tp_Env, sizeof(_Client_Tp_Env));
+	}
+
+	if (_hClearThread != NULL)
+	{
+		::WaitForSingleObject(_hClearThread, INFINITE);
+		::CloseHandle(_hClearThread);
+		_hClearThread = NULL;
 	}
 
 	::DeleteCriticalSection(&_VecSocketClientLock);
@@ -224,6 +234,37 @@ VOID CALLBACK libTools::CSocketBaseServerService::IoCompletionCallback(PTP_CALLB
 		delete pIoEvent;
 		pIoEvent = nullptr;
 	});
+}
+
+DWORD WINAPI libTools::CSocketBaseServerService::_ClearThread(_In_ LPVOID lpParam)
+{
+	CSocketBaseServerService* pSocketBaseServerService = reinterpret_cast<CSocketBaseServerService *>(lpParam);
+	while (pSocketBaseServerService->_bRun)
+	{
+		pSocketBaseServerService->InvokeVecSocketClient([=] 
+		{
+			for (auto itr = pSocketBaseServerService->_VecSocketClient.begin(); itr != pSocketBaseServerService->_VecSocketClient.end();)
+			{
+				// 是否被使用了(是否该socket被Client使用了)
+				CONST auto& itm = *itr;
+				if (!itm->IsOnLine())
+				{
+					itr++;
+					continue;
+				}
+				else if (!itm->IsKeepALiveTimeout())
+				{
+					itr++;
+					continue;
+				}
+
+				
+				itm->DisConnect();
+			}
+		});
+		::Sleep(1000);
+	}
+	return 0;
 }
 
 VOID libTools::CSocketBaseServerService::PostAccept()

@@ -16,6 +16,7 @@
 #pragma comment(lib,"SocketCommonLib.lib")
 #pragma comment(lib,"CharacterLib.lib")
 #pragma comment(lib,"TimeLib.lib")
+#pragma comment(lib,"Ws2_32.lib")
 
 #define _SELF L"SocketBaseClientService.cpp"
 libTools::CSocketBaseClientService::CSocketBaseClientService() :_ServerSocket(INVALID_SOCKET), _pServerTpIo(nullptr), _dwRecvSize(NULL)

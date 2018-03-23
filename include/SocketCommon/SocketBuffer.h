@@ -33,6 +33,7 @@ namespace libTools
 		template<typename T>
 		VOID InitializeHead(T MsgHead)
 		{
+			clear();
 			_dwMsgHead = static_cast<DWORD>(MsgHead);
 			AddVerData();
 		}

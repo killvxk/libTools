@@ -43,6 +43,7 @@ namespace libTools
 		// 完成端口回调
 		static VOID CALLBACK IoCompletionCallback(PTP_CALLBACK_INSTANCE Instance, PVOID Context, PVOID Overlapped, ULONG IoResult, ULONG_PTR NumberOfBytesTransferred, PTP_IO Io);
 
+		static DWORD WINAPI  _ClearThread(_In_ LPVOID lpParam);
 	protected:
 		/////IOCP Action/////////////////////////////////////////////////////////////////////
 		VOID PostAccept();
@@ -99,6 +100,8 @@ namespace libTools
 		TP_CLEANUP_GROUP*                           _pClent_Tp_Ggoup;
 
 		CRITICAL_SECTION							_VecSocketClientLock;
+
+		HANDLE										_hClearThread;
 	protected:
 		std::atomic<BOOL>							_bRun;
 

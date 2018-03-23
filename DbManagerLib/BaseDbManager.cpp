@@ -6,6 +6,7 @@
 #pragma comment(lib,"ExceptionLib.lib")
 #pragma comment(lib,"LogLib.lib")
 #pragma comment(lib,"CharacterLib.lib")
+#pragma comment(lib,"ODBC32.lib")
 
 #define _SELF L"DbManager.cpp"
 BOOL libTools::CBaseDbManager::ExcuteSQL(_In_ CONST std::wstring wsSQL, _In_ UINT uResultCount, _Out_ std::vector<Table>& VecResult) CONST
