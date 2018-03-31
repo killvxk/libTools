@@ -26,6 +26,12 @@ namespace libTools
 		Stop();
 	}
 
+	libTools::CCmdLog& CCmdLog::GetInstance()
+	{
+		static CCmdLog Instance;
+		return Instance;
+	}
+
 	BOOL CCmdLog::Run(_In_ CONST std::wstring& wsClientName, _In_ CONST std::vector<ExpressionFunPtr>& ParmVecFunPtr)
 	{
 		if (wsClientName == L"--")

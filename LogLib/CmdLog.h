@@ -34,6 +34,8 @@ namespace libTools
 		CCmdLog();
 		~CCmdLog();
 
+		static CCmdLog& GetInstance();
+
 		BOOL Run(_In_ CONST std::wstring& wsClientName, _In_ CONST std::vector<ExpressionFunPtr>& ParmVecFunPtr);
 
 		VOID Stop();

@@ -8,6 +8,11 @@
 
 namespace libTools
 {
+	CExprFunBase::CExprFunBase()
+	{
+
+	}
+
 	UINT CLogExpression::Push(_In_ std::function<VOID(CONST std::vector<std::wstring>&)> fnPtr, _In_ CONST std::wstring& wsFunName) throw()
 	{
 		ExpressionFunPtr FunPtrCustome_ = { fnPtr, wsFunName };
@@ -17,7 +22,7 @@ namespace libTools
 
 	VOID CLogExpression::SetVecExprFunPtr(_In_ CONST std::vector<ExpressionFunPtr>& ParmVecFunPtr) throw()
 	{
-		VecFunPtr = ParmVecFunPtr;
+
 	}
 
 	BOOL CLogExpression::Run(_In_ CONST std::wstring& wsText) throw()
@@ -46,6 +51,7 @@ namespace libTools
 		if (itr != VecFunPtr.end())
 		{
 			itr->fnPtr(VecParm);
+			return TRUE;
 		}
 
 		LOG_CF_E(L"UnExist Function Name '%s'", wsFunName.c_str());
@@ -56,5 +62,4 @@ namespace libTools
 		}
 		return FALSE;
 	}
-
 }

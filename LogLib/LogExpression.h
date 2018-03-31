@@ -22,7 +22,7 @@ namespace libTools
 	class CExprFunBase
 	{
 	public:
-		CExprFunBase() = default;
+		CExprFunBase();
 		virtual ~CExprFunBase() = default;
 
 		virtual std::vector<ExpressionFunPtr>& GetVec() = NULL;
